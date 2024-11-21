@@ -1,5 +1,5 @@
 #pragma once
-#include <Global.hpp>
+#include <Player.hpp>
 
 class Engine
 {
@@ -8,4 +8,7 @@ class Engine
         ~Engine();
         void Draw();
         void Update();
+    
+    private:
+        Player *player;
 };
