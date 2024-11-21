@@ -2,8 +2,8 @@
 
 int main()
 {
-    InitWindow(1280, 720, "Killer Arborist");
-    SetTargetFPS(60);
+    InitWindow(Global::window_width, Global::window_height, Global::game_title);
+    SetTargetFPS(Global::game_fps);
     Engine engine;
 
     while(!WindowShouldClose())
