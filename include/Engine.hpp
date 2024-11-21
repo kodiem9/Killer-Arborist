@@ -1,5 +1,6 @@
 #pragma once
 #include <Player.hpp>
+#include <Tile.hpp>
 
 class Engine
 {
@@ -12,4 +13,5 @@ class Engine
     private:
         Player *player;
         Camera2D camera = { 0 };
+        std::vector<Tile> tiles;
 };

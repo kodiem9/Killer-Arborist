@@ -8,6 +8,11 @@ Engine::Engine()
     camera.offset = (Vector2){ Global::window_width/2.0f, Global::window_height/2.0f };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
+
+    for(int i = 0; i < 20; i++)
+    {
+        tiles.emplace_back(GetRandomValue(0, Global::window_width), GetRandomValue(0, Global::window_height));
+    }
 }
 
 Engine::~Engine()
@@ -20,6 +25,9 @@ void Engine::Draw()
 {
     BeginMode2D(camera);
 
+        for(Tile tile: tiles) {
+            tile.Draw();
+        }
         player->Draw();
     
     EndMode2D();
@@ -30,5 +38,8 @@ void Engine::Draw()
 void Engine::Update()
 {
     player->Update();
+    for(Tile tile: tiles) {
+        player->Collide(tile.TileAttributes());
+    }
     camera.target = player->GetPlayerPosition();
 }
