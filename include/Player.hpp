@@ -9,6 +9,8 @@ class Player
         void Draw();
         void Update();
 
+        Vector2 GetPlayerPosition();
+
     private:
         float x, y;
 };

@@ -11,4 +11,5 @@ class Engine
     
     private:
         Player *player;
+        Camera2D camera = { 0 };
 };
