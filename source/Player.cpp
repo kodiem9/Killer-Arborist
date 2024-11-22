@@ -2,10 +2,7 @@
 
 Player::Player(float x, float y) : x(x), y(y) {}
 
-Player::~Player()
-{
-
-}
+Player::~Player() {}
 
 /* PUBLIC */
 void Player::Draw()
@@ -15,10 +12,13 @@ void Player::Draw()
 
 void Player::Update()
 {
+    b_sprint = IsKeyDown(KEY_LEFT_SHIFT);
+    speed = b_sprint ? Speed::SPRINT : Speed::NORMAL;
+
     dir_x = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
     dir_y = IsKeyDown(KEY_S) - IsKeyDown(KEY_W);
-    new_x += dir_x * 5;
-    new_y += dir_y * 5;
+    new_x += dir_x * speed;
+    new_y += dir_y * speed;
 }
 
 void Player::Collide(Rectangle const &data)
@@ -46,4 +46,9 @@ void Player::Collide(Rectangle const &data)
 Vector2 Player::GetPlayerPosition()
 {
     return (Vector2){ x, y };
+}
+
+bool Player::IsSprinting()
+{
+    return b_sprint;
 }

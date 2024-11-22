@@ -13,8 +13,16 @@ class Player
         void Collide(Rectangle const &data);
 
         Vector2 GetPlayerPosition();
+        bool IsSprinting();
 
     private:
+        enum Speed
+        {
+            NORMAL = 5,
+            SPRINT = 8
+        };
+
         float new_x, new_y, x, y;
-        int8_t dir_x, dir_y;
+        int8_t dir_x, dir_y, speed;
+        bool b_sprint;
 };
