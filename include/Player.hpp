@@ -10,11 +10,11 @@ class Player
         ~Player();
         void Draw();
         void Update();
-        void Collide(Rectangle data);
+        void Collide(Rectangle const &data);
 
         Vector2 GetPlayerPosition();
 
     private:
-        float x, y;
+        float new_x, new_y, x, y;
         int8_t dir_x, dir_y;
 };

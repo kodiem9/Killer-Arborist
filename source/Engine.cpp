@@ -38,7 +38,7 @@ void Engine::Draw()
 void Engine::Update()
 {
     player->Update();
-    for(Tile tile: tiles) {
+    for(Tile &tile: tiles) {
         player->Collide(tile.TileAttributes());
     }
     camera.target = player->GetPlayerPosition();
