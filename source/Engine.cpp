@@ -41,5 +41,6 @@ void Engine::Update()
     for(Tile &tile: tiles) {
         player->Collide(tile.TileAttributes());
     }
-    camera.target = player->GetPlayerPosition();
+    camera.target.x += (player->GetPlayerPosition().x - camera.target.x) / 5;
+    camera.target.y += (player->GetPlayerPosition().y - camera.target.y) / 5;
 }
