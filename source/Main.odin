@@ -1,14 +1,13 @@
 package main
 
-import rl "vendor:raylib"
+import "game"
 
 main :: proc() {
-    rl.InitWindow(800, 600, "Killer Arborist - dev");
-    defer rl.CloseWindow()
-
-    for !rl.WindowShouldClose() {
-        rl.BeginDrawing()
-        rl.ClearBackground(rl.LIGHTGRAY)
-        rl.EndDrawing()
+    game.game_init()
+    
+    for game.game_is_running() {
+        game.game_loop()
     }
+
+    game.game_destroy()
 }
