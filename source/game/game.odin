@@ -30,14 +30,21 @@ game_destroy :: proc() {
 
 game_loop :: proc() {
     rl.BeginDrawing()
-    player_update(rl.GetFrameTime(), &game_memory.player)
-    game_update_camera()
+
+        player_update(rl.GetFrameTime(), &game_memory.player)
+        game_update_camera()
+
     rl.ClearBackground(rl.LIGHTGRAY)
-    rl.BeginMode2D(camera)
-    for &tile in game_memory.tiles do tile_draw(&tile)
-    player_draw(&game_memory.player)
-    rl.EndMode2D()
-    rl.DrawFPS(8, 8)
+
+        rl.BeginMode2D(camera)
+
+            for &tile in game_memory.tiles do tile_draw(&tile)
+            player_draw(&game_memory.player)
+
+        rl.EndMode2D()
+
+        rl.DrawFPS(8, 8)
+
     rl.EndDrawing()
 }
 
