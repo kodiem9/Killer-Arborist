@@ -49,7 +49,8 @@ game_loop :: proc() {
 }
 
 game_update_camera :: proc() {
-    camera.target = game_memory.player.position
+    camera.target.x += (game_memory.player.position.x - camera.target.x) / 5;
+    camera.target.y += (game_memory.player.position.y - camera.target.y) / 5;
 }
 
 game_is_running :: proc() -> bool {
