@@ -1,5 +1,4 @@
 package game
-
 import rl "vendor:raylib"
 
 game_init :: proc() {
