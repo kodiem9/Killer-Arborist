@@ -11,7 +11,7 @@ game_init :: proc() {
     rl.InitWindow(800, 600, "Killer Arborist - dev")
     rl.SetTargetFPS(120)
 
-    game_memory.player = { position={ f32(rl.GetScreenWidth() / 2 - 32), f32(rl.GetScreenHeight() / 2 - 32) } }
+    player_init(&game_memory.player)
 
     camera.target = game_memory.player.position
     camera.offset = { f32(rl.GetScreenWidth() / 2 - 32), f32(rl.GetScreenHeight() / 2 - 32) }
