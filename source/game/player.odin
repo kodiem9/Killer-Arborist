@@ -4,7 +4,11 @@ import "core:fmt"
 
 @(private="file")
 SIZE : f32 : 64
+
+@(private="file")
 NORMAL_SPEED : f32 : 300
+
+@(private="file")
 FAST_SPEED : f32 : 600
 
 Player :: struct {
