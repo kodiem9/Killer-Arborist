@@ -18,9 +18,12 @@ game_init :: proc() {
     camera.rotation = 0
     camera.zoom = 1
 
-    for &value in game_memory.tiles {
-        value.position.x = f32(rl.GetRandomValue(0, rl.GetScreenWidth()))
-        value.position.y = f32(rl.GetRandomValue(0, rl.GetScreenHeight()))
+    for &tile in game_memory.tiles {
+        tile_pos: rl.Vector2
+        tile_pos.x = f32(rl.GetRandomValue(0, rl.GetScreenWidth()))
+        tile_pos.y = f32(rl.GetRandomValue(0, rl.GetScreenHeight()))
+
+        tile_init(&tile, tile_pos)
     }
 }
 
@@ -32,6 +35,7 @@ game_loop :: proc() {
     rl.BeginDrawing()
 
         player_update(rl.GetFrameTime(), &game_memory.player)
+        for &tile in game_memory.tiles do player_collision(&game_memory.player, &tile)
         game_update_camera()
 
     rl.ClearBackground(rl.LIGHTGRAY)

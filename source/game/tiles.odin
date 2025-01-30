@@ -5,7 +5,13 @@ import rl "vendor:raylib"
 SIZE : f32 : 64
 
 Tile :: struct {
-    position: rl.Vector2
+    position: rl.Vector2,
+    size: rl.Vector2
+}
+
+tile_init :: proc(tile: ^Tile, position: rl.Vector2) {
+    tile.position = position
+    tile.size = { SIZE, SIZE }
 }
 
 tile_draw :: proc(tile: ^Tile) {
