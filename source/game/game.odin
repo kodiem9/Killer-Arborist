@@ -1,9 +1,10 @@
 package game
 import rl "vendor:raylib"
+import "core:fmt"
 
 Game_Memory :: struct {
     player: Player,
-    tiles: [10]Tile
+    tiles: [dynamic]Tile
 }
 game_memory: Game_Memory
 
@@ -18,16 +19,18 @@ game_init :: proc() {
     camera.rotation = 0
     camera.zoom = 1
 
-    for &tile in game_memory.tiles {
+    for i in 0..<9 {
         tile_pos: rl.Vector2
         tile_pos.x = f32(rl.GetRandomValue(0, rl.GetScreenWidth()))
         tile_pos.y = f32(rl.GetRandomValue(0, rl.GetScreenHeight()))
 
-        tile_init(&tile, tile_pos)
+        append(&game_memory.tiles, tile_init(tile_pos))
     }
 }
 
 game_destroy :: proc() {
+    delete(game_memory.tiles)
+
     rl.CloseWindow()
 }
 

@@ -9,9 +9,13 @@ Tile :: struct {
     size: rl.Vector2
 }
 
-tile_init :: proc(tile: ^Tile, position: rl.Vector2) {
+tile_init :: proc(position: rl.Vector2) -> Tile {
+    tile: Tile
+    
     tile.position = position
     tile.size = { SIZE, SIZE }
+
+    return tile
 }
 
 tile_draw :: proc(tile: ^Tile) {
