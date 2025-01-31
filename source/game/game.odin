@@ -4,7 +4,8 @@ import "core:fmt"
 
 Game_Memory :: struct {
     player: Player,
-    tiles: [dynamic]Tile
+    tiles: [dynamic]Tile,
+    npcs: [dynamic]NPC
 }
 game_memory: Game_Memory
 
@@ -26,10 +27,19 @@ game_init :: proc() {
 
         append(&game_memory.tiles, tile_init(tile_pos))
     }
+
+    for i in 0..<3 {
+        npc_pos: rl.Vector2
+        npc_pos.x = f32(rl.GetRandomValue(0, rl.GetScreenWidth()))
+        npc_pos.y = f32(rl.GetRandomValue(0, rl.GetScreenHeight()))
+
+        append(&game_memory.npcs, npc_init(npc_pos))
+    }
 }
 
 game_destroy :: proc() {
     delete(game_memory.tiles)
+    delete(game_memory.npcs)
 
     rl.CloseWindow()
 }
@@ -47,6 +57,7 @@ game_loop :: proc() {
         rl.BeginMode2D(camera)
 
             for &tile in game_memory.tiles do tile_draw(&tile)
+            for &npc in game_memory.npcs do npc_draw(&npc)
             player_draw(&game_memory.player)
 
         rl.EndMode2D()
