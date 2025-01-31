@@ -37,6 +37,7 @@ game_loop :: proc() {
         player_update(rl.GetFrameTime(), &game_memory.player)
         for &tile in game_memory.tiles do player_collision(&game_memory.player, &tile)
         game_update_camera()
+        when ODIN_DEBUG do debug_mode_update()
 
     rl.ClearBackground(rl.LIGHTGRAY)
 
@@ -47,6 +48,7 @@ game_loop :: proc() {
 
         rl.EndMode2D()
 
+        when ODIN_DEBUG do debug_mode_draw()
         rl.DrawFPS(8, 8)
 
     rl.EndDrawing()
