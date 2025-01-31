@@ -45,10 +45,13 @@ game_destroy :: proc() {
 }
 
 game_loop :: proc() {
+    dt: f32 = rl.GetFrameTime()
+
     rl.BeginDrawing()
 
-        player_update(rl.GetFrameTime(), &game_memory.player)
+        player_update(dt, &game_memory.player)
         for &tile in game_memory.tiles do player_collision(&game_memory.player, &tile)
+        for &npc in game_memory.npcs do npc_update(dt, &npc)
         game_update_camera()
         when ODIN_DEBUG do debug_mode_update()
 
