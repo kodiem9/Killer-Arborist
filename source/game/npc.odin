@@ -19,6 +19,7 @@ NPC_State :: enum {
     Standing,
     Preparing,
     Moving,
+    Controlling,
 }
 
 NPC :: struct {
@@ -41,44 +42,27 @@ npc_init :: proc(position: rl.Vector2) -> NPC {
 }
 
 npc_draw :: proc(npc: ^NPC) {
-    rl.DrawRectangleV(npc.position, npc.size, rl.BLUE)
-    // MAYBE: in debug mode add entity ids and see where the destination leads?
+    when ODIN_DEBUG {
+        npc_rect: rl.Rectangle = { npc.position.x, npc.position.y, SIZE, SIZE }
+
+        rl.DrawLineEx(npc.position + { SIZE / 2, SIZE / 2 }, npc.destination + { STOP_BORDER / 2, STOP_BORDER / 2 }, 4, rl.BLACK)
+        rl.DrawRectangleV(npc.destination, { STOP_BORDER, STOP_BORDER }, rl.BLACK)
+        rl.DrawRectangleRec(npc_rect, rl.BLUE)
+        if npc.state == .Controlling do rl.DrawRectangleLinesEx(npc_rect, 4, rl.GREEN)
+    }
+    else {
+        rl.DrawRectangleV(npc.position, { SIZE, SIZE }, rl.BLUE)
+    }
 }
 
 npc_update :: proc(dt: f32, npc: ^NPC) {
-    switch npc.state {
+    #partial switch npc.state {
         case .Preparing: {
             dest: rl.Vector2
-            distance: rl.Vector2
-
             dest.x = f32(rl.GetRandomValue(0, rl.GetScreenWidth()))
             dest.y = f32(rl.GetRandomValue(0, rl.GetScreenHeight()))
-            npc.destination = dest
 
-            distance.x = npc.destination.x - npc.position.x
-            distance.y = npc.destination.y - npc.position.y
-
-            if abs(distance.x) > abs(distance.y) {
-                npc.direction_speed.x = 1
-                npc.direction_speed.y = abs(distance.y / distance.x)
-            }
-            else {
-                npc.direction_speed.x = abs(distance.x / distance.y)
-                npc.direction_speed.y = 1
-            }
-
-            if distance.x < 0 do npc.direction_speed.x *= -1
-            if distance.y < 0 do npc.direction_speed.y *= -1
-
-            when ODIN_DEBUG {
-                fmt.println("npc.position:", npc.position)
-                fmt.println("npc.destination:", npc.destination)
-                fmt.println("npc.direction_speed:", npc.direction_speed)
-                fmt.println()
-            }
-
-            npc.state = .Moving
-            npc.delay_before_moving = DELAY_BEFORE_MOVING
+            npc_set_destination(npc, dest)
         }
 
         case .Moving: {
@@ -102,4 +86,46 @@ npc_update :: proc(dt: f32, npc: ^NPC) {
             }
         }
     }
+
+    when ODIN_DEBUG {
+        if rl.IsMouseButtonPressed(.LEFT) {
+            if is_mouse_hovered_vec(npc.position, { SIZE, SIZE }) {
+                npc.state = .Controlling
+            } else {
+                if npc.state == .Controlling do npc_set_destination(npc, world_mouse)
+            }
+        }
+    }
+}
+
+npc_set_destination :: proc(npc: ^NPC, destination: rl.Vector2) {
+    dest: rl.Vector2 = destination
+    distance: rl.Vector2
+
+    npc.destination = dest
+
+    distance.x = npc.destination.x - npc.position.x
+    distance.y = npc.destination.y - npc.position.y
+
+    if abs(distance.x) > abs(distance.y) {
+        npc.direction_speed.x = 1
+        npc.direction_speed.y = abs(distance.y / distance.x)
+    }
+    else {
+        npc.direction_speed.x = abs(distance.x / distance.y)
+        npc.direction_speed.y = 1
+    }
+
+    if distance.x < 0 do npc.direction_speed.x *= -1
+    if distance.y < 0 do npc.direction_speed.y *= -1
+
+    when ODIN_DEBUG {
+        fmt.println("npc.position:", npc.position)
+        fmt.println("npc.destination:", npc.destination)
+        fmt.println("npc.direction_speed:", npc.direction_speed)
+        fmt.println()
+    }
+
+    npc.state = .Moving
+    npc.delay_before_moving = DELAY_BEFORE_MOVING
 }
