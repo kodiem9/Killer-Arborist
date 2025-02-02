@@ -2,6 +2,7 @@ package game
 import rl "vendor:raylib"
 
 Global :: struct {
+    entity_texture: rl.Texture2D,
     camera: rl.Camera2D,
     world_mouse: rl.Vector2,
     screen_size: rl.Vector2
@@ -12,9 +13,17 @@ i8_vec2 :: struct {
     x, y: i8
 }
 
+Full_Texture :: struct {
+    source: rl.Rectangle,
+    dest: rl.Rectangle,
+    origin: rl.Vector2,
+}
+
 global_init :: proc() {
     global.screen_size.x = f32(rl.GetScreenWidth())
     global.screen_size.y = f32(rl.GetScreenHeight())
+
+    global.entity_texture = rl.LoadTexture("../assets/temp.png")
 }
 
 is_mouse_hovered_vec :: proc(pos, size: rl.Vector2) -> bool {

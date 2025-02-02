@@ -4,7 +4,13 @@ import "core:fmt"
 import "core:math"
 
 @(private="file")
-SIZE : f32 : 64
+TEXTURE_SIZE : f32 : 16
+
+@(private="file")
+MULTIPLY_SIZE : f32 : 4
+
+@(private="file")
+SIZE : f32 : TEXTURE_SIZE * MULTIPLY_SIZE
 
 @(private="file")
 SPEED : f32 : 100
@@ -23,6 +29,7 @@ NPC_State :: enum {
 }
 
 NPC :: struct {
+    texture: Full_Texture,
     position: rl.Vector2,
     size: rl.Vector2,
     destination: rl.Vector2,
@@ -38,20 +45,22 @@ npc_init :: proc(position: rl.Vector2) -> NPC {
     npc.size = { SIZE, SIZE }
     npc.state = .Standing
 
+    npc.texture.source = { 16, 0, TEXTURE_SIZE, TEXTURE_SIZE }
+    npc.texture.dest = { npc.position.x, npc.position.y, npc.texture.source.width * MULTIPLY_SIZE, npc.texture.source.height * MULTIPLY_SIZE }
+    npc.texture.origin = { 0, 0 }
+
     return npc
 }
 
 npc_draw :: proc(npc: ^NPC) {
     when ODIN_DEBUG {
-        npc_rect: rl.Rectangle = { npc.position.x, npc.position.y, SIZE, SIZE }
-
         rl.DrawLineEx(npc.position + { SIZE / 2, SIZE / 2 }, npc.destination + { STOP_BORDER / 2, STOP_BORDER / 2 }, 4, rl.BLACK)
         rl.DrawRectangleV(npc.destination, { STOP_BORDER, STOP_BORDER }, rl.BLACK)
-        rl.DrawRectangleRec(npc_rect, rl.BLUE)
-        if npc.state == .Controlling do rl.DrawRectangleLinesEx(npc_rect, 4, rl.GREEN)
+        rl.DrawTexturePro(global.entity_texture, npc.texture.source, npc.texture.dest, npc.texture.origin, 0, rl.WHITE)
+        if npc.state == .Controlling do rl.DrawRectangleLinesEx(npc.texture.dest, 4, rl.GREEN)
     }
     else {
-        rl.DrawRectangleV(npc.position, { SIZE, SIZE }, rl.BLUE)
+        rl.DrawTexturePro(global.entity_texture, npc.texture.source, npc.texture.dest, npc.texture.origin, 0, rl.WHITE)
     }
 }
 
@@ -96,6 +105,8 @@ npc_update :: proc(dt: f32, npc: ^NPC) {
             }
         }
     }
+
+    npc.texture.dest = { npc.position.x, npc.position.y, npc.texture.source.width * MULTIPLY_SIZE, npc.texture.source.height * MULTIPLY_SIZE }
 }
 
 npc_set_destination :: proc(npc: ^NPC, destination: rl.Vector2) {

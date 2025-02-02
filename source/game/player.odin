@@ -3,7 +3,13 @@ import rl "vendor:raylib"
 import "core:fmt"
 
 @(private="file")
-SIZE : f32 : 64
+TEXTURE_SIZE : f32 : 16
+
+@(private="file")
+MULTIPLY_SIZE : f32 : 4
+
+@(private="file")
+SIZE : f32 : TEXTURE_SIZE * MULTIPLY_SIZE
 
 @(private="file")
 NORMAL_SPEED : f32 : 300
@@ -12,6 +18,7 @@ NORMAL_SPEED : f32 : 300
 FAST_SPEED : f32 : 600
 
 Player :: struct {
+    texture: Full_Texture,
     position: rl.Vector2,
     new_position: rl.Vector2,
     speed: f32,
@@ -21,10 +28,14 @@ Player :: struct {
 player_init :: proc(player: ^Player) {
     player.position = { (global.screen_size.x / 2) - SIZE / 2, (global.screen_size.y / 2) - SIZE / 2 }
     player.speed = NORMAL_SPEED
+
+    player.texture.source = { 0, 0, TEXTURE_SIZE, TEXTURE_SIZE }
+    player.texture.dest = { player.position.x, player.position.y, player.texture.source.width * MULTIPLY_SIZE, player.texture.source.height * MULTIPLY_SIZE }
+    player.texture.origin = { 0, 0 }
 }
 
 player_draw :: proc(player: ^Player) {
-    rl.DrawRectangleV(player.position, { SIZE, SIZE }, rl.RED)
+    rl.DrawTexturePro(global.entity_texture, player.texture.source, player.texture.dest, player.texture.origin, 0, rl.WHITE)
 }
 
 player_update :: proc(dt: f32, player: ^Player) {
@@ -36,6 +47,8 @@ player_update :: proc(dt: f32, player: ^Player) {
 
     if rl.IsKeyDown(.LEFT_SHIFT) { player.speed = FAST_SPEED }
     else { player.speed = NORMAL_SPEED }
+
+    player.texture.dest = { player.position.x, player.position.y, player.texture.source.width * MULTIPLY_SIZE, player.texture.source.height * MULTIPLY_SIZE }
 }
 
 player_collision :: proc(player: ^Player, tile: ^Tile) {
