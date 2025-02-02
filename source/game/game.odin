@@ -1,5 +1,6 @@
 package game
 import rl "vendor:raylib"
+import "dbg"
 import "core:fmt"
 
 Game_Memory :: struct {
@@ -54,7 +55,7 @@ game_loop :: proc() {
         for &tile in game_memory.tiles do player_collision(&game_memory.player, &tile)
         for &npc in game_memory.npcs do npc_update(dt, &npc)
         game_update_camera()
-        when ODIN_DEBUG do debug_mode_update()
+        when ODIN_DEBUG do dbg.update()
 
     rl.ClearBackground(rl.LIGHTGRAY)
 
@@ -66,7 +67,7 @@ game_loop :: proc() {
 
         rl.EndMode2D()
 
-        when ODIN_DEBUG do debug_mode_draw()
+        when ODIN_DEBUG do dbg.draw()
         rl.DrawFPS(8, 8)
 
     rl.EndDrawing()
