@@ -19,7 +19,7 @@ Player :: struct {
 }
 
 player_init :: proc(player: ^Player) {
-    player.position = { (screen_size.x / 2) - 32, (screen_size.y / 2) - 32 }
+    player.position = { (global.screen_size.x / 2) - SIZE / 2, (global.screen_size.y / 2) - SIZE / 2 }
     player.speed = NORMAL_SPEED
 }
 

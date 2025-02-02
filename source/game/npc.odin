@@ -92,7 +92,7 @@ npc_update :: proc(dt: f32, npc: ^NPC) {
             if is_mouse_hovered_vec(npc.position, { SIZE, SIZE }) {
                 npc.state = .Controlling
             } else {
-                if npc.state == .Controlling do npc_set_destination(npc, world_mouse)
+                if npc.state == .Controlling do npc_set_destination(npc, global.world_mouse)
             }
         }
     }

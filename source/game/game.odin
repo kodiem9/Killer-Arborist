@@ -16,10 +16,10 @@ game_init :: proc() {
     global_init()
     player_init(&game_memory.player)
 
-    camera.target = game_memory.player.position
-    camera.offset = { (screen_size.x / 2) - 32, (screen_size.y / 2) - 32 }
-    camera.rotation = 0
-    camera.zoom = 1
+    global.camera.target = game_memory.player.position
+    global.camera.offset = { (global.screen_size.x / 2) - 32, (global.screen_size.y / 2) - 32 }
+    global.camera.rotation = 0
+    global.camera.zoom = 1
 
     for i in 0..<9 {
         tile_pos: rl.Vector2
@@ -58,7 +58,7 @@ game_loop :: proc() {
 
     rl.ClearBackground(rl.LIGHTGRAY)
 
-        rl.BeginMode2D(camera)
+        rl.BeginMode2D(global.camera)
 
             for &tile in game_memory.tiles do tile_draw(&tile)
             for &npc in game_memory.npcs do npc_draw(&npc)
@@ -73,8 +73,8 @@ game_loop :: proc() {
 }
 
 game_update_camera :: proc() {
-    camera.target.x += (game_memory.player.position.x - camera.target.x) / 5;
-    camera.target.y += (game_memory.player.position.y - camera.target.y) / 5;
+    global.camera.target.x += (game_memory.player.position.x - global.camera.target.x) / 5;
+    global.camera.target.y += (game_memory.player.position.y - global.camera.target.y) / 5;
 }
 
 game_is_running :: proc() -> bool {
