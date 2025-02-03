@@ -23,7 +23,7 @@ global_init :: proc() {
     global.screen_size.x = f32(rl.GetScreenWidth())
     global.screen_size.y = f32(rl.GetScreenHeight())
 
-    global.entity_texture = rl.LoadTexture("../assets/temp.png")
+    global.entity_texture = rl.LoadTexture("../assets/entities.png")
 }
 
 is_mouse_hovered_vec :: proc(pos, size: rl.Vector2) -> bool {
