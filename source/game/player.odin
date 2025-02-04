@@ -51,6 +51,7 @@ player_update :: proc(dt: f32, player: ^Player) {
     player.texture.dest = { player.position.x, player.position.y, player.texture.source.width * MULTIPLY_SIZE, player.texture.source.height * MULTIPLY_SIZE }
 }
 
+// IMPORTANT: the player WON'T move if this procedure isn't called at least once!
 player_collision :: proc(player: ^Player, tile: ^Tile) {
     penetration: rl.Vector2
 
