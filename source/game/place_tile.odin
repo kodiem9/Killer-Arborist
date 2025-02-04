@@ -41,10 +41,3 @@ place_tile_update :: proc(tile: ^Place_Tile) {
     tile.add_tile = rl.IsMouseButtonDown(.LEFT)
     tile.erase_tile = rl.IsMouseButtonDown(.RIGHT)
 }
-
-/*
-uint16_t world_mouse_x = (GetMouseX() / camera.zoom) + (camera.target.x - (GetScreenWidth() / 2 / camera.zoom));
-uint16_t world_mouse_y = (GetMouseY() / camera.zoom) + (camera.target.y - (GetScreenHeight() / 2 / camera.zoom));
-data.x = (world_mouse_x / 60) * 60;
-data.y = (world_mouse_y / 60) * 60;
-*/

@@ -55,13 +55,13 @@ game_loop :: proc() {
                 for &tile in game_memory.tiles do player_collision(&game_memory.player, &tile)
                 for &npc in game_memory.npcs do npc_update(dt, &npc)
                 game_update_camera()
-                place_tile_update(&game_memory.place_tile)
+                public_map_editor_update()
             }
 
             case .MAP_EDITOR: {
                 game_update_camera()
-                place_tile_update(&game_memory.place_tile)
-                game_manage_tiles()
+                public_map_editor_update()
+                private_map_editor_update(dt)
             }
         }
 
@@ -86,7 +86,7 @@ game_loop :: proc() {
                     for &tile in game_memory.tiles do tile_draw(&tile)
                     for &npc in game_memory.npcs do npc_draw(&npc)
                     player_draw(&game_memory.player)
-                    place_tile_draw(&game_memory.place_tile)
+                    map_editor_draw()
 
                 rl.EndMode2D()
             }
@@ -101,31 +101,6 @@ game_loop :: proc() {
 game_update_camera :: proc() {
     global.camera.target.x += (game_memory.player.position.x - global.camera.target.x) / 5;
     global.camera.target.y += (game_memory.player.position.y - global.camera.target.y) / 5;
-}
-
-game_manage_tiles :: proc() {
-    if game_memory.place_tile.add_tile {
-        tile_pos: rl.Vector2 = game_memory.place_tile.position
-
-        for tile in game_memory.tiles {
-            if tile.position == tile_pos do return
-        }
-
-        append(&game_memory.tiles, tile_init(tile_pos))
-        fmt.println("Added tile:", tile_pos)
-    }
-
-    if game_memory.place_tile.erase_tile {
-        tile_pos: rl.Vector2 = game_memory.place_tile.position
-        
-        for tile, index in game_memory.tiles {
-            if tile.position == tile_pos {
-                ordered_remove(&game_memory.tiles, index)
-                fmt.println("Removed tile:", tile_pos)
-                return
-            }
-        }
-    }
 }
 
 game_is_running :: proc() -> bool {

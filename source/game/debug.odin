@@ -30,16 +30,4 @@ debug_update :: proc() {
     if rl.IsKeyPressed(.M) {
         debug_window_enabled = !debug_window_enabled
     }
-
-    if rl.IsKeyPressed(.N) {
-        if global.scene == .GAME {
-            global.scene = .MAP_EDITOR
-        } else {
-            global.scene = .GAME
-        }
-    }
-
-    if rl.IsKeyPressed(.ONE) do global.selected_tile = 0
-    if rl.IsKeyPressed(.TWO) do global.selected_tile = 1
-    if rl.IsKeyPressed(.THREE) do global.selected_tile = 2
 }
