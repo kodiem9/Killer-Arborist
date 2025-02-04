@@ -25,13 +25,7 @@ game_init :: proc() {
     global.camera.rotation = 0
     global.camera.zoom = 1
 
-    for i in 0..<1 {
-        tile_pos: rl.Vector2
-        tile_pos.x = f32(rl.GetRandomValue(0, rl.GetScreenWidth()))
-        tile_pos.y = f32(rl.GetRandomValue(0, rl.GetScreenHeight()))
-
-        append(&game_memory.tiles, tile_init(tile_pos))
-    }
+    append(&game_memory.tiles, tile_init({ 0, 0 }))
 
     for i in 0..<3 {
         npc_pos: rl.Vector2
@@ -67,6 +61,7 @@ game_loop :: proc() {
             case .MAP_EDITOR: {
                 game_update_camera()
                 place_tile_update(&game_memory.place_tile)
+                game_manage_tiles()
             }
         }
 
@@ -106,6 +101,31 @@ game_loop :: proc() {
 game_update_camera :: proc() {
     global.camera.target.x += (game_memory.player.position.x - global.camera.target.x) / 5;
     global.camera.target.y += (game_memory.player.position.y - global.camera.target.y) / 5;
+}
+
+game_manage_tiles :: proc() {
+    if game_memory.place_tile.add_tile {
+        tile_pos: rl.Vector2 = game_memory.place_tile.position
+
+        for tile in game_memory.tiles {
+            if tile.position == tile_pos do return
+        }
+
+        append(&game_memory.tiles, tile_init(tile_pos))
+        fmt.println("Added tile:", tile_pos)
+    }
+
+    if game_memory.place_tile.erase_tile {
+        tile_pos: rl.Vector2 = game_memory.place_tile.position
+        
+        for tile, index in game_memory.tiles {
+            if tile.position == tile_pos {
+                ordered_remove(&game_memory.tiles, index)
+                fmt.println("Removed tile:", tile_pos)
+                return
+            }
+        }
+    }
 }
 
 game_is_running :: proc() -> bool {

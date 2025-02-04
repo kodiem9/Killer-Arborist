@@ -11,20 +11,18 @@ debug_info_draw :: proc() {
 }
 
 debug_draw :: proc() {
-    when ODIN_DEBUG {
-        if debug_window_enabled {
-            debug_info_draw()
+    if debug_window_enabled {
+        debug_info_draw()
+    }
+    else {
+        if global.scene == .GAME {
+            rl.DrawText("Game", 8, rl.GetScreenHeight() - 74, 28, rl.BLUE)
+        } else {
+            rl.DrawText("Map editor", 8, rl.GetScreenHeight() - 74, 28, rl.BLUE)
         }
-        else {
-            if global.scene == .GAME {
-                rl.DrawText("Game", 8, rl.GetScreenHeight() - 74, 28, rl.BLUE)
-            } else {
-                rl.DrawText("Map editor", 8, rl.GetScreenHeight() - 74, 28, rl.BLUE)
-            }
-            rl.DrawText("Debug", 8, rl.GetScreenHeight() - 108, 28, rl.RED)
-            rl.DrawText("(Press M for memory window)", 8, rl.GetScreenHeight() - 40, 14, rl.GRAY)
-            rl.DrawText("(Press N to change scenes)", 8, rl.GetScreenHeight() - 20, 14, rl.GRAY)
-        }
+        rl.DrawText("Debug", 8, rl.GetScreenHeight() - 108, 28, rl.RED)
+        rl.DrawText("(Press M for memory window)", 8, rl.GetScreenHeight() - 40, 14, rl.GRAY)
+        rl.DrawText("(Press N to change scenes)", 8, rl.GetScreenHeight() - 20, 14, rl.GRAY)
     }
 }
 
@@ -40,4 +38,8 @@ debug_update :: proc() {
             global.scene = .GAME
         }
     }
+
+    if rl.IsKeyPressed(.ONE) do global.selected_tile = 0
+    if rl.IsKeyPressed(.TWO) do global.selected_tile = 1
+    if rl.IsKeyPressed(.THREE) do global.selected_tile = 2
 }

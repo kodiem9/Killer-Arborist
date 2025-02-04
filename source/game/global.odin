@@ -15,6 +15,7 @@ Global :: struct {
     world_mouse: rl.Vector2,
     screen_size: rl.Vector2,
     scene: Game_Scene,
+    selected_tile: u8,
 }
 global: Global
 

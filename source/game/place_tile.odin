@@ -16,7 +16,9 @@ ALPHA : rl.Color : { 255, 255, 255, 125 }
 
 Place_Tile :: struct {
     texture: Full_Texture,
-    position: rl.Vector2
+    position: rl.Vector2,
+    add_tile: bool,
+    erase_tile: bool,
 }
 
 place_tile_init :: proc(tile: ^Place_Tile) {
@@ -33,7 +35,11 @@ place_tile_update :: proc(tile: ^Place_Tile) {
     tile.position.x = math.round_f32((global.world_mouse.x / SIZE)) * SIZE
     tile.position.y = math.round_f32((global.world_mouse.y / SIZE)) * SIZE
 
+    tile.texture.source = { TEXTURE_SIZE * f32(global.selected_tile), TEXTURE_SIZE * f32(global.selected_tile), TEXTURE_SIZE, TEXTURE_SIZE }
     tile.texture.dest = { tile.position.x, tile.position.y, tile.texture.source.width * MULTIPLY_SIZE, tile.texture.source.height * MULTIPLY_SIZE }
+
+    tile.add_tile = rl.IsMouseButtonDown(.LEFT)
+    tile.erase_tile = rl.IsMouseButtonDown(.RIGHT)
 }
 
 /*
