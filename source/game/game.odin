@@ -1,6 +1,5 @@
 package game
 import rl "vendor:raylib"
-import "dbg"
 import "core:fmt"
 
 Game_Memory :: struct {
@@ -71,15 +70,7 @@ game_loop :: proc() {
             }
         }
 
-        when ODIN_DEBUG do dbg.update()
-
-        if rl.IsKeyPressed(.N) {
-            if global.scene == .GAME {
-                global.scene = .MAP_EDITOR
-            } else {
-                global.scene = .GAME
-            }
-        }
+        when ODIN_DEBUG do debug_update()
 
     rl.ClearBackground(rl.LIGHTGRAY)
 
@@ -106,7 +97,7 @@ game_loop :: proc() {
             }
         }        
 
-        when ODIN_DEBUG do dbg.draw()
+        when ODIN_DEBUG do debug_draw()
         rl.DrawFPS(8, 8)
 
     rl.EndDrawing()
