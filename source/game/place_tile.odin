@@ -32,8 +32,8 @@ place_tile_draw :: proc(tile: ^Place_Tile) {
 }
 
 place_tile_update :: proc(tile: ^Place_Tile) {
-    tile.position.x = math.round_f32((global.world_mouse.x / SIZE)) * SIZE
-    tile.position.y = math.round_f32((global.world_mouse.y / SIZE)) * SIZE
+    tile.position.x = math.round_f32(global.world_mouse.x / SIZE) * SIZE
+    tile.position.y = math.round_f32(global.world_mouse.y / SIZE) * SIZE
 
     tile.texture.source = { TEXTURE_SIZE * f32(global.selected_tile), TEXTURE_SIZE * f32(global.selected_tile), TEXTURE_SIZE, TEXTURE_SIZE }
     tile.texture.dest = { tile.position.x, tile.position.y, tile.texture.source.width * MULTIPLY_SIZE, tile.texture.source.height * MULTIPLY_SIZE }

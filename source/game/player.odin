@@ -17,6 +17,12 @@ NORMAL_SPEED : f32 : 300
 @(private="file")
 FAST_SPEED : f32 : 600
 
+@(private="file")
+WALKING_ZOOM : f32 : 1
+
+@(private="file")
+RUNNING_ZOOM : f32 : 0.85
+
 Player :: struct {
     texture: Full_Texture,
     position: rl.Vector2,
@@ -45,10 +51,19 @@ player_update :: proc(dt: f32, player: ^Player) {
     player.new_position.x += f32(player.direction.x) * player.speed * dt
     player.new_position.y += f32(player.direction.y) * player.speed * dt
 
-    if rl.IsKeyDown(.LEFT_SHIFT) { player.speed = FAST_SPEED }
-    else { player.speed = NORMAL_SPEED }
+    if rl.IsKeyDown(.LEFT_SHIFT) {
+        player.speed = FAST_SPEED
+        global.camera.zoom += (RUNNING_ZOOM - global.camera.zoom) / 5;
+    }
+    else {
+        player.speed = NORMAL_SPEED
+        global.camera.zoom += (WALKING_ZOOM - global.camera.zoom) / 5;
+    }
 
     player.texture.dest = { player.position.x, player.position.y, player.texture.source.width * MULTIPLY_SIZE, player.texture.source.height * MULTIPLY_SIZE }
+
+    global.camera.target.x += (player.position.x - global.camera.target.x) / 5;
+    global.camera.target.y += (player.position.y - global.camera.target.y) / 5;
 }
 
 // IMPORTANT: the player WON'T move if this procedure isn't called at least once!

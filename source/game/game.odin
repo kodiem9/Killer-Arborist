@@ -54,12 +54,10 @@ game_loop :: proc() {
                 player_update(dt, &game_memory.player)
                 for &tile in game_memory.tiles do player_collision(&game_memory.player, &tile)
                 for &npc in game_memory.npcs do npc_update(dt, &npc)
-                game_update_camera()
                 public_map_editor_update()
             }
 
             case .MAP_EDITOR: {
-                game_update_camera()
                 public_map_editor_update()
                 private_map_editor_update(dt)
             }
@@ -96,11 +94,6 @@ game_loop :: proc() {
         rl.DrawFPS(8, 8)
 
     rl.EndDrawing()
-}
-
-game_update_camera :: proc() {
-    global.camera.target.x += (game_memory.player.position.x - global.camera.target.x) / 5;
-    global.camera.target.y += (game_memory.player.position.y - global.camera.target.y) / 5;
 }
 
 game_is_running :: proc() -> bool {
