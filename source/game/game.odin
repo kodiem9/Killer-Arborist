@@ -13,7 +13,7 @@ game_memory: Game_Memory
 game_init :: proc() {
     rl.InitWindow(800, 600, "Killer Arborist - dev")
     rl.SetTargetFPS(120)
-    
+
     global.scene = .GAME
 
     global_init()
@@ -25,14 +25,14 @@ game_init :: proc() {
     global.camera.rotation = 0
     global.camera.zoom = 1
 
-    append(&game_memory.tiles, tile_init({ 0, 0 }))
+    append(&game_memory.tiles, tile_clone({ 0, 0 }))
 
     for i in 0..<3 {
         npc_pos: rl.Vector2
         npc_pos.x = f32(rl.GetRandomValue(0, rl.GetScreenWidth()))
         npc_pos.y = f32(rl.GetRandomValue(0, rl.GetScreenHeight()))
 
-        append(&game_memory.npcs, npc_init(npc_pos))
+        append(&game_memory.npcs, npc_clone(npc_pos))
     }
 }
 
@@ -88,7 +88,7 @@ game_loop :: proc() {
 
                 rl.EndMode2D()
             }
-        }        
+        }
 
         when ODIN_DEBUG do debug_draw()
         rl.DrawFPS(8, 8)

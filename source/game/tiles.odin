@@ -16,9 +16,9 @@ Tile :: struct {
     size: rl.Vector2
 }
 
-tile_init :: proc(position: rl.Vector2) -> Tile {
+tile_clone :: proc(position: rl.Vector2) -> Tile {
     tile: Tile
-    
+
     tile.position = position
     tile.size = { SIZE, SIZE }
     tile.texture.source = { TEXTURE_SIZE * f32(global.selected_tile), TEXTURE_SIZE * f32(global.selected_tile), TEXTURE_SIZE, TEXTURE_SIZE }

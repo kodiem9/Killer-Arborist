@@ -38,9 +38,9 @@ NPC :: struct {
     state: NPC_State
 }
 
-npc_init :: proc(position: rl.Vector2) -> NPC {
+npc_clone :: proc(position: rl.Vector2) -> NPC {
     npc: NPC
-    
+
     npc.position = position
     npc.size = { SIZE, SIZE }
     npc.state = .Standing

@@ -54,13 +54,13 @@ map_editor_manage_tiles :: proc() {
             if tile.position == tile_pos do return
         }
 
-        append(&game_memory.tiles, tile_init(tile_pos))
+        append(&game_memory.tiles, tile_clone(tile_pos))
         fmt.println("Added tile:", tile_pos)
     }
 
     if game_memory.place_tile.erase_tile {
         tile_pos: rl.Vector2 = game_memory.place_tile.position
-        
+
         for tile, index in game_memory.tiles {
             if tile.position == tile_pos {
                 ordered_remove(&game_memory.tiles, index)

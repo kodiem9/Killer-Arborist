@@ -47,7 +47,7 @@ player_draw :: proc(player: ^Player) {
 player_update :: proc(dt: f32, player: ^Player) {
     player.direction.x = i8(rl.IsKeyDown(.D)) - i8(rl.IsKeyDown(.A))
     player.direction.y = i8(rl.IsKeyDown(.S)) - i8(rl.IsKeyDown(.W))
-    
+
     player.new_position.x += f32(player.direction.x) * player.speed * dt
     player.new_position.y += f32(player.direction.y) * player.speed * dt
 
@@ -72,20 +72,20 @@ player_collision :: proc(player: ^Player, tile: ^Tile) {
 
     if player_check_collisions_with_tile(player^, tile^) {
         // Checks the penetration to see which side is being "pushed"
-        if (player.direction.x == 1) {
+        if player.direction.x == 1 {
             penetration.x = tile.position.x - (player.new_position.x + SIZE)
         } else {
             penetration.x = (player.new_position.x - tile.size.x) - tile.position.x
         }
-    
-        if (player.direction.y == 1) {
+
+        if player.direction.y == 1 {
             penetration.y = tile.position.y - (player.new_position.y + SIZE)
         } else {
             penetration.y = (player.new_position.y - tile.size.y) - tile.position.y
         }
-    
+
         // If left, right side is being pushed more, then we update the x position, if not then we update the y position
-        if (abs(penetration.x) < abs(penetration.y)) {
+        if abs(penetration.x) < abs(penetration.y) {
             if (player.direction.x == 1) {
                 player.new_position.x = tile.position.x - SIZE
             } else {
@@ -93,12 +93,12 @@ player_collision :: proc(player: ^Player, tile: ^Tile) {
             }
         }
         else {
-            if (player.direction.y == 1) {
+            if player.direction.y == 1 {
                 player.new_position.y = tile.position.y - SIZE
             } else {
                 player.new_position.y = tile.position.y + tile.size.y
             }
-        }    
+        }
     }
 
     player.position = player.new_position
